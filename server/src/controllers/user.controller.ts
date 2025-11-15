@@ -50,11 +50,16 @@ export async function updateProfile(req: Request, res: Response) {
 
 export async function getUserByExperienceId(req: Request, res: Response) {
   try {
-    const { experienceId } = req.params;
+    let { experienceId } = req.params;
     
     if (!experienceId) {
       return res.status(400).json({ error: "Experience ID is required" });
     }
+
+    // Remove "USER" prefix if present (case-insensitive)
+    experienceId = experienceId.replace(/^USER/i, '');
+    
+    console.log('Looking for experienceId:', experienceId);
 
     const user = await prisma.user.findUnique({
       where: { experienceId },
@@ -70,9 +75,11 @@ export async function getUserByExperienceId(req: Request, res: Response) {
     });
 
     if (!user) {
+      console.log('User not found for experienceId:', experienceId);
       return res.status(404).json({ error: "User not found" });
     }
 
+    console.log('User found:', user);
     res.json(user);
   } catch (e) {
     console.error(e);

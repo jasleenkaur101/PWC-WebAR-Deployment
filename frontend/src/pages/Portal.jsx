@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import NavBar from "../components/NavBar.jsx";
 import API from "../api.js";
+import { EIGHTH_WALL_BASE_URL } from '../config.js';
 
 export default function Portal() {
   const [me, setMe] = useState(null);
@@ -19,7 +20,7 @@ export default function Portal() {
   const deepLink = useMemo(() => {
     if (!me?.experienceId) return "";
     // Shared main experience with unique code:
-    return `https://pwcarbusinesscards.8thwall.app/further-testing/?userId=USER${me.experienceId}`;
+    return `${EIGHTH_WALL_BASE_URL}/?userId=USER${me.experienceId}`;
   }, [me]);
 
   function generate() {

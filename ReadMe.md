@@ -14,8 +14,8 @@ npm install
 npm run dev    
 
 # View Database (Prisma Studio)
-`cd server`
-`npx prisma studio`
+cd server
+npx prisma studio
 <!-- This opens a GUI at http://localhost:5555
 Click on "User" model to view all user data (email, experienceId, convaiId, rpmAvatarUrl, etc.)
  -->

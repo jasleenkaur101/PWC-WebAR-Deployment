@@ -4,6 +4,7 @@ import API from "../api.js";
 import Navbar from "../components/Navbar.jsx";
 import { QRCodeCanvas } from "qrcode.react";
 import "../legacy-styles/business-portal.css";
+import { EIGHTH_WALL_BASE_URL } from '../config.js';
 
 export default function Preview() {
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ export default function Preview() {
   if (!user) return null;
 
   const experienceId = user.experienceId;
-  const publicLink = `https://pwcarbusinesscards.8thwall.app/further-testing/?userId=USER${experienceId}`;
+  const publicLink = `${EIGHTH_WALL_BASE_URL}/?userId=USER${experienceId}`;
+
 
   return (
     <div className="dashboard-root">
