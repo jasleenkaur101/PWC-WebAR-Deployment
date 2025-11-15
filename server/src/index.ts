@@ -19,14 +19,7 @@ app.use(express.json({ limit: "1mb" }));
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://abc123.ngrok.io",
-      "https://abhinandan19909-default-pwcarbusinesscards.dev.8thwall.app",
-      "https://pwcarbusinesscards.8thwall.app",
-      "https://*.8thwall.app",
-      "https://*.8thwall.com"
-    ],
+    origin: "*",
     credentials: true,
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
