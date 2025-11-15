@@ -47,3 +47,35 @@ export async function updateProfile(req: Request, res: Response) {
     res.status(500).json({ error: "Failed to update profile" });
   }
 }
+
+export async function getUserByExperienceId(req: Request, res: Response) {
+  try {
+    const { experienceId } = req.params;
+    
+    if (!experienceId) {
+      return res.status(400).json({ error: "Experience ID is required" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { experienceId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        experienceId: true,
+        convaiId: true,
+        rpmAvatarUrl: true,
+        createdAt: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Failed to load user by experience ID" });
+  }
+}
