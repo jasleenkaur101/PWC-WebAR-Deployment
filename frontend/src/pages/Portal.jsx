@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import NavBar from "../components/NavBar.jsx";
+import NavBar from "../components/Navbar.jsx";
 import API from "../api.js";
 import { EIGHTH_WALL_BASE_URL } from '../config.js';
 
