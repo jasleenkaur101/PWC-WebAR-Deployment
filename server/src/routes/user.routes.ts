@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/profile", authMiddleware, getProfile);
 router.patch("/profile", authMiddleware, updateProfile);
+router.get("/experience/:experienceId", getUserByExperienceId); 
 
 // Admin routes (protected by auth)
 router.get("/admin/all", authMiddleware, async (req, res) => {
