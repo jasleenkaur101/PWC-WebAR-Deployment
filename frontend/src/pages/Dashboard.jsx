@@ -47,11 +47,10 @@ export default function Dashboard() {
     }
     setSaving(true);
     try {
-      const updated = await API.updateMe({
+      const updated = await API.updateProfile({
         convaiId: convaiId.trim(),
         rpmAvatarUrl: rpmAvatarUrl.trim(),
-      });
-      setUser(updated);
+      });      setUser(updated);
       setMsg("✅ Saved successfully.");
     } catch {
       setMsg("❌ Failed to save. Please try again.");
