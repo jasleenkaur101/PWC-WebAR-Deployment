@@ -41,10 +41,14 @@ const frontendDir = path.resolve(thisDirname, "../../frontend");
 const distDir = path.join(frontendDir, "dist");
 
 if (env.NODE_ENV === "production") {
-  app.use(express.static(distDir));
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(distDir, "index.html"));
-  });
+  // Only serve frontend if dist directory exists
+  const fs = require('fs');
+  if (fs.existsSync(distDir)) {
+    app.use(express.static(distDir));
+    app.get("*", (_req, res) => {
+      res.sendFile(path.join(distDir, "index.html"));
+    });
+  }
 }
 
 // ---- Single listen() ----
