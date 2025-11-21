@@ -1,7 +1,9 @@
 // src/api.js
+// Use relative paths by default (same origin as frontend)
+// Or use VITE_API_URL environment variable for custom API endpoints
 const BASE =
   (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) ||
-  "http://localhost:5174/api";
+  "/api";
 
 function authHeaders() {
   const token =

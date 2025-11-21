@@ -17,8 +17,14 @@ const app = express();
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      "img-src": ["'self'", "data:", "https://api.qrserver.com"],
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https://api.qrserver.com", "https:"],
+      connectSrc: ["'self'", "https://pwc-webar-deployment.onrender.com", "https://8thwall.com", "https://pwcarbusinesscards.8thwall.app"],
+      fontSrc: ["'self'", "data:"],
+      mediaSrc: ["'self'", "https:"],
+      frameSrc: ["'self'", "https://pwcarbusinesscards.8thwall.app", "https://8thwall.com"],
     },
   },
 }));app.use(morgan("dev"));
