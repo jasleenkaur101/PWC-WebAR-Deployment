@@ -4,7 +4,6 @@ import helmet from "helmet";
 import cors from "cors";
 import path from "path";
 import fs from "fs";
-
 import { env } from "./env";
 import { router } from "./routes/index";
 import authRoutes from "./routes/auth.routes";
@@ -14,22 +13,44 @@ import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
+// Security middleware with CSP
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https://api.qrserver.com", "https:"],
-      connectSrc: ["'self'", "https://pwc-webar-deployment.onrender.com", "https://8thwall.com", "https://pwcarbusinesscards.8thwall.app"],
+      imgSrc: ["'self'", "data:", "https://api.qrserver.com", "https:", "blob:"],
+      connectSrc: [
+        "'self'",
+        "https://*.onrender.com",  // Allow all Render subdomains
+        "https://8thwall.com",
+        "https://*.8thwall.com",
+        "https://pwcarbusinesscards.8thwall.app"
+      ],
       fontSrc: ["'self'", "data:"],
-      mediaSrc: ["'self'", "https:"],
-      frameSrc: ["'self'", "https://pwcarbusinesscards.8thwall.app", "https://8thwall.com"],
+      mediaSrc: ["'self'", "https:", "blob:"],
+      frameSrc: [
+        "'self'",
+        "https://pwcarbusinesscards.8thwall.app",
+        "https://8thwall.com",
+        "https://*.8thwall.com"
+      ],
+      workerSrc: ["'self'", "blob:"],
+      childSrc: ["'self'", "blob:"],
     },
   },
-}));app.use(morgan("dev"));
+  crossOriginEmbedderPolicy: false,  // Important for 8th Wall
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Logging middleware
+app.use(morgan("dev"));
+
+// Body parser
 app.use(express.json({ limit: "1mb" }));
 
+// CORS middleware
 app.use(
   cors({
     origin: "*",
@@ -41,9 +62,6 @@ app.use(
 
 // ---- API routes ----
 app.use("/api", router);
-
-// ---- Error handler ALWAYS last before listen ----
-app.use(errorHandler);
 
 // ---- Static frontend only in production ----
 const thisDirname = __dirname;
@@ -62,6 +80,9 @@ if (fs.existsSync(distDir)) {
 } else {
   console.log("Frontend dist not found, API-only mode");
 }
+
+// ---- Error handler ALWAYS last before listen ----
+app.use(errorHandler);
 
 // ---- Single listen() ----
 const PORT = Number(process.env.PORT) || 5174;
